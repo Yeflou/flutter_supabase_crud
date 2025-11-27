@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../services/supabase_service.dart';
 import '../../utils/app_routes.dart';
-import '../../utils/constants.dart';
+import '../../utils/app_colors.dart';
 import '../../widgets/custom_input_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -72,15 +72,18 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
-        backgroundColor: colorPeach,
-        foregroundColor: textDark,
+        backgroundColor: AppColors.peach,
+        foregroundColor: AppColors.textDark,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [colorPeach, colorYellow],
+            colors: [
+              AppColors.peach,
+              AppColors.yellow,
+            ],
           ),
         ),
         child: Center(
@@ -91,72 +94,69 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.lock_outline, size: 80, color: textDark),
+                  const Icon(Icons.lock_outline, size: 80, color: AppColors.textDark),
                   const SizedBox(height: 20),
                 
-                // Input Email
-                CustomInputField(
-                  controller: _emailController,
-                  labelText: 'Email',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || !GetUtils.isEmail(value)) {
-                      return 'Masukkan email yang valid';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                
-                // Input Password
-                CustomInputField(
-                  controller: _passwordController,
-                  labelText: 'Password',
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.length < 6) {
-                      return 'Password minimal 6 karakter';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-                
-                // Tombol Login
-                _isLoading
-                    ? const CircularProgressIndicator(color: textDark)
-                    : SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _signIn,
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: textDark,
-                            foregroundColor: Colors.white,
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Text('Masuk', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                
-                const SizedBox(height: 16),
-                
-                // Link ke Register
-                TextButton(
-                  onPressed: () => Get.toNamed(AppRoutes.register),
-                  child: Text(
-                    'Belum punya akun? Daftar di sini',
-                    style: TextStyle(color: textDark, fontWeight: FontWeight.w600),
+                  // Input Email
+                  CustomInputField(
+                    controller: _emailController,
+                    labelText: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || !GetUtils.isEmail(value)) {
+                        return 'Masukkan email yang valid';
+                      }
+                      return null;
+                    },
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  
+                  // Input Password
+                  CustomInputField(
+                    controller: _passwordController,
+                    labelText: 'Password',
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.length < 6) {
+                        return 'Password minimal 6 karakter';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  // Tombol Login
+                  _isLoading
+                      ? const CircularProgressIndicator(color: AppColors.textDark)
+                      : SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _signIn,
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              backgroundColor: AppColors.textDark,
+                              foregroundColor: Colors.white,
+                              elevation: 3,
+                            ),
+                            child: const Text('Masuk'),
+                          ),
+                        ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Link ke Register
+                  TextButton(
+                    onPressed: () => Get.toNamed(AppRoutes.register),
+                    child: Text(
+                      'Belum punya akun? Daftar di sini',
+                      style: TextStyle(color: AppColors.textDark, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }

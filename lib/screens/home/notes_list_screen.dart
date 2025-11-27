@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../models/note_model.dart';
 import '../../services/supabase_service.dart';
 import '../../utils/app_routes.dart';
-import '../../utils/constants.dart';
+import '../../utils/app_colors.dart';
 
 class NotesListScreen extends StatefulWidget {
   const NotesListScreen({super.key});
@@ -75,9 +75,7 @@ class _NotesListScreenState extends State<NotesListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Catatan Saya', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: colorPurple,
-        foregroundColor: Colors.white,
+        title: const Text('Catatan Saya'),
         actions: [
           // Tombol ke Profil
           IconButton(
@@ -95,19 +93,31 @@ class _NotesListScreenState extends State<NotesListScreen> {
             _fetchNotes();
           }
         },
-        backgroundColor: colorPink,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add),
       ),
       body: RefreshIndicator(
         onRefresh: _fetchNotes,
-        color: colorPurple,
         child: _isLoading
-            ? const Center(child: CircularProgressIndicator(color: colorPurple))
+            ? const Center(child: CircularProgressIndicator())
             : _notes.isEmpty
                 ? Center(
-                    child: Text(
-                      'Belum ada catatan. Buat baru yuk!',
-                      style: TextStyle(color: textMedium, fontSize: 16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.note_add_outlined,
+                          size: 80,
+                          color: AppColors.purple.withValues(alpha: 0.5),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Belum ada catatan. Buat baru yuk!',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textMedium,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : ListView.builder(
@@ -115,21 +125,17 @@ class _NotesListScreenState extends State<NotesListScreen> {
                     itemCount: _notes.length,
                     itemBuilder: (context, index) {
                       final note = _notes[index];
-                      // Rotasi warna border untuk setiap catatan
-                      final borderColor = noteColors[index % noteColors.length];
+                      // Ambil warna dari palette berdasarkan index (rotasi warna)
+                      final cardColor = AppColors.getNoteColor(index);
+                      final textColor = AppColors.getContrastText(cardColor);
+                      
                       return Card(
-                        elevation: 2,
+                        elevation: 3,
                         margin: const EdgeInsets.symmetric(vertical: 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          side: BorderSide(
-                            color: borderColor,
-                            width: 3,
-                          ),
-                        ),
-                        color: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        color: cardColor,
                         child: ListTile(
-                          contentPadding: const EdgeInsets.all(16),
+                          contentPadding: const EdgeInsets.all(12),
                           // Tampilkan gambar kecil (thumbnail) jika ada
                           leading: note.imageUrl != null
                               ? ClipRRect(
@@ -140,36 +146,38 @@ class _NotesListScreenState extends State<NotesListScreen> {
                                     height: 60,
                                     fit: BoxFit.cover,
                                     errorBuilder: (ctx, err, stack) =>
-                                        Icon(Icons.broken_image, color: textDark),
+                                        Icon(Icons.broken_image, color: textColor),
                                   ),
                                 )
                               : Container(
                                   width: 60,
                                   height: 60,
                                   decoration: BoxDecoration(
-                                    color: borderColor.withValues(alpha: 0.1),
+                                    color: textColor.withValues(alpha: 0.2),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: Icon(Icons.note, color: borderColor),
+                                  child: Icon(Icons.note, color: textColor),
                                 ),
                           title: Text(
                             note.title,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: textDark,
+                              color: textColor,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           subtitle: Text(
                             note.content,
-                            style: TextStyle(color: textMedium),
+                            style: TextStyle(
+                              color: textColor.withValues(alpha: 0.9),
+                            ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
+                            icon: Icon(Icons.delete, color: Colors.red.shade700),
                             onPressed: () => _deleteNote(note.id!),
                           ),
                           onTap: () async {

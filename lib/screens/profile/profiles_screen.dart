@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../models/profile_model.dart';
 import '../../services/supabase_service.dart';
 import '../../utils/app_routes.dart';
-import '../../utils/constants.dart';
+import '../../utils/app_colors.dart';
 import '../../widgets/custom_input_field.dart';
 
 
@@ -132,23 +132,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profil Saya', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: colorPurple,
-        foregroundColor: Colors.white,
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: colorPurple))
-          : Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.white, colorPink, colorYellow],
-                  stops: [0.0, 0.5, 1.0],
-                ),
-              ),
-              child: SingleChildScrollView(
+      appBar: AppBar(title: const Text('Profil Saya')),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.purple,
+              AppColors.pink,
+              AppColors.peach,
+            ],
+          ),
+        ),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
@@ -160,86 +159,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: colorPurple, width: 4),
-                          boxShadow: [
-                            BoxShadow(
-                              color: colorPurple.withValues(alpha: 0.3),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            ),
-                          ],
+                          border: Border.all(
+                            color: AppColors.purple,
+                            width: 4,
+                          ),
                         ),
                         child: CircleAvatar(
                           radius: 60,
-                          backgroundColor: colorPeach,
+                          backgroundColor: Colors.grey[300],
                           backgroundImage: _avatarUrl != null
                               ? NetworkImage(_avatarUrl!)
                               : null,
                           child: _avatarUrl == null
-                              ? Icon(Icons.person, size: 60, color: textDark)
+                              ? const Icon(Icons.person, size: 60, color: Colors.grey)
                               : null,
                         ),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      'Ketuk foto untuk mengubah',
-                      style: TextStyle(color: textMedium, fontSize: 12, fontWeight: FontWeight.w500),
+                    const Text('Ketuk foto untuk mengubah', 
+                      style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 12)),
+                    
+                    const SizedBox(height: 30),
+
+                    // INPUT USERNAME
+                    CustomInputField(
+                      controller: _usernameController,
+                      labelText: 'Username',
                     ),
-                  
-                  const SizedBox(height: 30),
+                    
+                    const SizedBox(height: 20),
 
-                  // INPUT USERNAME
-                  CustomInputField(
-                    controller: _usernameController,
-                    labelText: 'Username',
-                  ),
-                  
-                  const SizedBox(height: 20),
-
-                  // TOMBOL UPDATE
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _updateProfile,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: colorPurple,
-                        foregroundColor: Colors.white,
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                    // TOMBOL UPDATE
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _updateProfile,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          backgroundColor: AppColors.purple,
+                          foregroundColor: Colors.white,
                         ),
+                        child: const Text('Simpan Perubahan'),
                       ),
-                      child: const Text('Simpan Perubahan', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     ),
-                  ),
 
-                  const SizedBox(height: 20),
-                  Divider(color: textLight.withValues(alpha: 0.3), thickness: 1),
-                  const SizedBox(height: 10),
+                    const SizedBox(height: 20),
+                    const Divider(),
+                    const SizedBox(height: 10),
 
-                  // TOMBOL LOGOUT
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: _signOut,
-                      icon: const Icon(Icons.logout),
-                      label: const Text('Keluar (Logout)', style: TextStyle(fontWeight: FontWeight.w600)),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.red,
-                        side: const BorderSide(color: Colors.red, width: 2),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                    // TOMBOL LOGOUT
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: _signOut,
+                        icon: const Icon(Icons.logout),
+                        label: const Text('Keluar (Logout)'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.red,
+                          side: const BorderSide(color: Colors.red),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ),
+      ),
     );
   }
 }
