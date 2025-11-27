@@ -1,12 +1,9 @@
-// lib/services/supabase_service.dart
-
 import 'dart:io';
-import 'dart:typed_data'; // Diperlukan untuk upload gambar di Web
+import 'dart:typed_data'; 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/note_model.dart';
 
 class SupabaseService {
-  // Mengambil instance client Supabase
   final _supabase = Supabase.instance.client;
 
   // ==============================

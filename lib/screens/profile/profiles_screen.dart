@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../models/profile_model.dart';
 import '../../services/supabase_service.dart';
 import '../../utils/app_routes.dart';
+import '../../utils/constants.dart';
 import '../../widgets/custom_input_field.dart';
 
 
@@ -131,32 +132,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profil Saya')),
+      appBar: AppBar(
+        title: const Text('Profil Saya', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: colorPurple,
+        foregroundColor: Colors.white,
+      ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  
-                  // TAMPILAN AVATAR
-                  GestureDetector(
-                    onTap: _uploadAvatar, // Klik gambar untuk ganti foto
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.grey[300],
-                      backgroundImage: _avatarUrl != null
-                          ? NetworkImage(_avatarUrl!)
-                          : null,
-                      child: _avatarUrl == null
-                          ? const Icon(Icons.person, size: 60, color: Colors.grey)
-                          : null,
+          ? const Center(child: CircularProgressIndicator(color: colorPurple))
+          : Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.white, colorPink, colorYellow],
+                  stops: [0.0, 0.5, 1.0],
+                ),
+              ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    
+                    // TAMPILAN AVATAR
+                    GestureDetector(
+                      onTap: _uploadAvatar, // Klik gambar untuk ganti foto
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: colorPurple, width: 4),
+                          boxShadow: [
+                            BoxShadow(
+                              color: colorPurple.withValues(alpha: 0.3),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundColor: colorPeach,
+                          backgroundImage: _avatarUrl != null
+                              ? NetworkImage(_avatarUrl!)
+                              : null,
+                          child: _avatarUrl == null
+                              ? Icon(Icons.person, size: 60, color: textDark)
+                              : null,
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text('Ketuk foto untuk mengubah', 
-                    style: TextStyle(color: Colors.grey, fontSize: 12)),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Ketuk foto untuk mengubah',
+                      style: TextStyle(color: textMedium, fontSize: 12, fontWeight: FontWeight.w500),
+                    ),
                   
                   const SizedBox(height: 30),
 
@@ -175,15 +204,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: _updateProfile,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Colors.teal,
+                        backgroundColor: colorPurple,
                         foregroundColor: Colors.white,
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
-                      child: const Text('Simpan Perubahan'),
+                      child: const Text('Simpan Perubahan', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     ),
                   ),
 
                   const SizedBox(height: 20),
-                  const Divider(),
+                  Divider(color: textLight.withValues(alpha: 0.3), thickness: 1),
                   const SizedBox(height: 10),
 
                   // TOMBOL LOGOUT
@@ -192,17 +225,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: OutlinedButton.icon(
                       onPressed: _signOut,
                       icon: const Icon(Icons.logout),
-                      label: const Text('Keluar (Logout)'),
+                      label: const Text('Keluar (Logout)', style: TextStyle(fontWeight: FontWeight.w600)),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.red,
-                        side: const BorderSide(color: Colors.red),
+                        side: const BorderSide(color: Colors.red, width: 2),
                         padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
+          ),
     );
   }
 }

@@ -1,9 +1,4 @@
-// lib/utils/app_routes.dart
-
 import 'package:get/get.dart';
-
-// Import halaman-halaman (screens) yang akan kita buat nanti
-// Jika baris-baris ini merah, abaikan dulu sampai kamu membuat filenya
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/register_screen.dart';
 import '../screens/home/note_form_screen.dart';
@@ -12,7 +7,6 @@ import '../screens/profile/profiles_screen.dart';
 import '../screens/splash_screen.dart';
 
 class AppRoutes {
-  // Mendefinisikan nama rute (URL-like path)
   static const String splash = '/';
   static const String login = '/login';
   static const String register = '/register';
@@ -20,7 +14,6 @@ class AppRoutes {
   static const String notes = '/notes';
   static const String noteForm = '/note-form';
 
-  // Mendaftarkan rute ke halaman aslinya
   static final routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
     GetPage(name: login, page: () => const LoginScreen()),

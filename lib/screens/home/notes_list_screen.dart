@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../models/note_model.dart';
 import '../../services/supabase_service.dart';
 import '../../utils/app_routes.dart';
+import '../../utils/constants.dart';
 
 class NotesListScreen extends StatefulWidget {
   const NotesListScreen({super.key});
@@ -74,7 +75,9 @@ class _NotesListScreenState extends State<NotesListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Catatan Saya'),
+        title: const Text('Catatan Saya', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: colorPurple,
+        foregroundColor: Colors.white,
         actions: [
           // Tombol ke Profil
           IconButton(
@@ -92,25 +95,41 @@ class _NotesListScreenState extends State<NotesListScreen> {
             _fetchNotes();
           }
         },
-        child: const Icon(Icons.add),
+        backgroundColor: colorPink,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       body: RefreshIndicator(
         onRefresh: _fetchNotes,
+        color: colorPurple,
         child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator(color: colorPurple))
             : _notes.isEmpty
-                ? const Center(child: Text('Belum ada catatan. Buat baru yuk!'))
+                ? Center(
+                    child: Text(
+                      'Belum ada catatan. Buat baru yuk!',
+                      style: TextStyle(color: textMedium, fontSize: 16),
+                    ),
+                  )
                 : ListView.builder(
                     padding: const EdgeInsets.all(12),
                     itemCount: _notes.length,
                     itemBuilder: (context, index) {
                       final note = _notes[index];
+                      // Rotasi warna border untuk setiap catatan
+                      final borderColor = noteColors[index % noteColors.length];
                       return Card(
-                        elevation: 3,
+                        elevation: 2,
                         margin: const EdgeInsets.symmetric(vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(
+                            color: borderColor,
+                            width: 3,
+                          ),
+                        ),
+                        color: Colors.white,
                         child: ListTile(
-                          contentPadding: const EdgeInsets.all(12),
+                          contentPadding: const EdgeInsets.all(16),
                           // Tampilkan gambar kecil (thumbnail) jika ada
                           leading: note.imageUrl != null
                               ? ClipRRect(
@@ -121,26 +140,31 @@ class _NotesListScreenState extends State<NotesListScreen> {
                                     height: 60,
                                     fit: BoxFit.cover,
                                     errorBuilder: (ctx, err, stack) =>
-                                        const Icon(Icons.broken_image),
+                                        Icon(Icons.broken_image, color: textDark),
                                   ),
                                 )
                               : Container(
                                   width: 60,
                                   height: 60,
                                   decoration: BoxDecoration(
-                                    color: Colors.teal.withValues(alpha: 0.1),
+                                    color: borderColor.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: const Icon(Icons.note, color: Colors.teal),
+                                  child: Icon(Icons.note, color: borderColor),
                                 ),
                           title: Text(
                             note.title,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: textDark,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           subtitle: Text(
                             note.content,
+                            style: TextStyle(color: textMedium),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),

@@ -1,6 +1,7 @@
 // lib/widgets/custom_input_field.dart
 
 import 'package:flutter/material.dart';
+import '../utils/constants.dart';
 
 class CustomInputField extends StatelessWidget {
   final TextEditingController controller;
@@ -28,13 +29,32 @@ class CustomInputField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       maxLines: maxLines,
+      style: TextStyle(color: textDark),
       decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: TextStyle(color: textMedium),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide(color: colorPurple.withValues(alpha: 0.3)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: BorderSide(color: colorPurple.withValues(alpha: 0.3)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: const BorderSide(color: colorPurple, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
         filled: true,
-        fillColor: Colors.grey[100],
+        fillColor: Colors.white,
       ),
     );
   }

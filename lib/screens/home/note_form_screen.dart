@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../models/note_model.dart';
 import '../../services/supabase_service.dart';
+import '../../utils/constants.dart';
 import '../../widgets/custom_input_field.dart';
 
 class NoteFormScreen extends StatefulWidget {
@@ -121,7 +122,12 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_existingNote == null ? 'Tambah Catatan' : 'Edit Catatan'),
+        title: Text(
+          _existingNote == null ? 'Tambah Catatan' : 'Edit Catatan',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: colorPurple,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -136,24 +142,36 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
                 child: Container(
                   height: 200,
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey),
+                    gradient: LinearGradient(
+                      colors: [colorPink.withValues(alpha: 0.3), colorYellow.withValues(alpha: 0.3)],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: colorPurple.withValues(alpha: 0.3), width: 2),
                   ),
                   child: _imageFile != null
                       // A. Menampilkan gambar baru yang dipilih (Preview Local)
-                      ? (kIsWeb 
-                          ? Image.network(_imageFile!.path, fit: BoxFit.cover) 
-                          : Image.file(File(_imageFile!.path), fit: BoxFit.cover))
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: kIsWeb 
+                              ? Image.network(_imageFile!.path, fit: BoxFit.cover) 
+                              : Image.file(File(_imageFile!.path), fit: BoxFit.cover),
+                        )
                       : _existingImageUrl != null
                           // B. Menampilkan gambar lama dari internet (Edit Mode)
-                          ? Image.network(_existingImageUrl!, fit: BoxFit.cover)
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(14),
+                              child: Image.network(_existingImageUrl!, fit: BoxFit.cover),
+                            )
                           // C. Placeholder jika tidak ada gambar
-                          : const Column(
+                          : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.add_photo_alternate, size: 50, color: Colors.grey),
-                                Text('Ketuk untuk tambah gambar'),
+                                Icon(Icons.add_photo_alternate, size: 50, color: textDark),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Ketuk untuk tambah gambar',
+                                  style: TextStyle(color: textMedium, fontWeight: FontWeight.w500),
+                                ),
                               ],
                             ),
                 ),
@@ -182,15 +200,19 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
 
               // --- TOMBOL SIMPAN ---
               _isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator(color: colorPurple))
                   : ElevatedButton.icon(
                       onPressed: _submit,
                       icon: const Icon(Icons.save),
-                      label: const Text('Simpan Catatan'),
+                      label: const Text('Simpan Catatan', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Colors.teal,
+                        backgroundColor: colorPurple,
                         foregroundColor: Colors.white,
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
             ],

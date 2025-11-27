@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../utils/app_routes.dart';
+import '../utils/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -37,22 +38,43 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Logo Aplikasi Sederhana
-            Icon(Icons.note_alt_outlined, size: 100, color: Colors.teal),
-            SizedBox(height: 24),
-            Text(
-              'Supabase Notes',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 24),
-            // Indikator Loading berputar
-            CircularProgressIndicator(color: Colors.teal),
-          ],
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [colorPurple, colorPink, colorPeach, colorYellow],
+            stops: [0.0, 0.33, 0.66, 1.0],
+          ),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo Aplikasi Sederhana
+              Icon(Icons.note_alt_outlined, size: 100, color: Colors.white),
+              SizedBox(height: 24),
+              Text(
+                'Supabase Notes',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(2, 2),
+                      blurRadius: 4,
+                      color: Colors.black26,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 24),
+              // Indikator Loading berputar
+              CircularProgressIndicator(color: Colors.white),
+            ],
+          ),
         ),
       ),
     );
