@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../utils/app_routes.dart';
-import '../utils/app_colors.dart';
+import '../utils/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -40,16 +40,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              AppColors.purple,
-              AppColors.pink,
-              AppColors.peach,
-              AppColors.yellow,
-            ],
+            colors: [colorPurple, colorPink, colorPeach, colorYellow],
+            stops: [0.0, 0.33, 0.66, 1.0],
           ),
         ),
         child: const Center(
@@ -62,9 +58,16 @@ class _SplashScreenState extends State<SplashScreen> {
               Text(
                 'Supabase Notes',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(2, 2),
+                      blurRadius: 4,
+                      color: Colors.black26,
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 24),
