@@ -1,5 +1,3 @@
-// lib/screens/home/notes_list_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../models/note_model.dart';
@@ -25,7 +23,6 @@ class _NotesListScreenState extends State<NotesListScreen> {
     _fetchNotes();
   }
 
-  // 1. Ambil data catatan dari Supabase
   Future<void> _fetchNotes() async {
     setState(() => _isLoading = true);
     try {
@@ -40,9 +37,8 @@ class _NotesListScreenState extends State<NotesListScreen> {
     }
   }
 
-  // 2. Fungsi Hapus Catatan
   Future<void> _deleteNote(int id) async {
-    // Tampilkan dialog konfirmasi dulu
+   
     final confirm = await Get.dialog<bool>(
       AlertDialog(
         title: const Text('Hapus Catatan'),
@@ -63,7 +59,7 @@ class _NotesListScreenState extends State<NotesListScreen> {
     if (confirm == true) {
       try {
         await _supabaseService.deleteNote(id);
-        _fetchNotes(); // Refresh list setelah hapus
+        _fetchNotes(); 
         Get.snackbar('Sukses', 'Catatan dihapus');
       } catch (e) {
         Get.snackbar('Error', 'Gagal menghapus: $e');

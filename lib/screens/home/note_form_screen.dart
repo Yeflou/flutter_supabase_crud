@@ -1,4 +1,3 @@
-// lib/screens/home/note_form_screen.dart
 
 import 'dart:io';
 import 'package:flutter/foundation.dart'; // Untuk kIsWeb
@@ -24,19 +23,17 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
 
-  // Variabel untuk menangani Edit Mode
   Note? _existingNote; 
   
-  // Variabel untuk Gambar
-  XFile? _imageFile; // File gambar yang baru dipilih dari galeri
-  String? _existingImageUrl; // URL gambar lama (jika sedang edit)
+  XFile? _imageFile; 
+  String? _existingImageUrl; 
 
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    // Cek apakah ada data yang dikirim dari halaman List (artinya ini mode EDIT)
+   
     if (Get.arguments is Note) {
       _existingNote = Get.arguments as Note;
       _titleController.text = _existingNote!.title;
@@ -45,7 +42,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
     }
   }
 
-  // Fungsi Pilih Gambar dari Galeri
+  
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -57,7 +54,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
     }
   }
 
-  // Fungsi Simpan (Create / Update)
+ 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -69,7 +66,7 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
 
       String? imageUrlToSave = _existingImageUrl;
 
-      // 1. Jika user memilih gambar baru, upload dulu
+      
       if (_imageFile != null) {
         final fileName = '${user.id}/${DateTime.now().millisecondsSinceEpoch}.jpg';
         
@@ -81,27 +78,27 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
         }
       }
 
-      // 2. Siapkan Objek Note
+     
       final note = Note(
-        id: _existingNote?.id, // Kalau null berarti baru, kalau ada isinya berarti update
+        id: _existingNote?.id, 
         userId: user.id,
         title: _titleController.text,
         content: _contentController.text,
         imageUrl: imageUrlToSave,
       );
 
-      // 3. Cek Mode: Tambah atau Edit
+      
       if (_existingNote == null) {
-        // Mode Tambah
+       
         await _supabaseService.addNote(note);
         Get.snackbar('Sukses', 'Catatan berhasil ditambahkan', backgroundColor: Colors.green, colorText: Colors.white);
       } else {
-        // Mode Edit
+       
         await _supabaseService.updateNote(note);
         Get.snackbar('Sukses', 'Catatan berhasil diperbarui', backgroundColor: Colors.blue, colorText: Colors.white);
       }
 
-      // 4. Kembali ke halaman list dengan sinyal "true" (agar list di-refresh)
+     
       Get.back(result: true);
 
     } catch (e) {

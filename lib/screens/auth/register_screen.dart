@@ -31,20 +31,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
-      // 1. Panggil service signUp (sekalian simpan username ke profile)
+      
       await _supabaseService.signUp(
         _emailController.text.trim(),
         _passwordController.text.trim(),
         _usernameController.text.trim(),
       );
 
-      // 2. Jika sukses, beri notifikasi atau langsung masuk
+     
       Get.snackbar('Sukses', 'Akun berhasil dibuat!',
           backgroundColor: Colors.green, colorText: Colors.white);
 
-      // 3. Masuk ke halaman utama (Notes)
-      // Catatan: Jika Supabase kamu mewajibkan Confirm Email, user tidak akan bisa login otomatis.
-      // Namun jika "Confirm Email" dimatikan di dashboard Supabase, ini akan langsung login.
       Get.offAllNamed(AppRoutes.notes);
 
     } on AuthException catch (e) {
@@ -97,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const Icon(Icons.person_add, size: 80, color: textDark),
                   const SizedBox(height: 20),
 
-                // Input Username
+              
                 CustomInputField(
                   controller: _usernameController,
                   labelText: 'Username',
@@ -110,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Input Email
+                
                 CustomInputField(
                   controller: _emailController,
                   labelText: 'Email',
@@ -124,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Input Password
+               
                 CustomInputField(
                   controller: _passwordController,
                   labelText: 'Password',
@@ -138,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // Tombol Daftar
+                
                 _isLoading
                     ? const CircularProgressIndicator(color: textDark)
                     : SizedBox(
@@ -160,9 +157,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 
                 const SizedBox(height: 16),
 
-                // Link Balik ke Login
+                
                 TextButton(
-                  onPressed: () => Get.back(), // Kembali ke halaman Login
+                  onPressed: () => Get.back(), 
                   child: Text(
                     'Sudah punya akun? Login',
                     style: TextStyle(color: textDark, fontWeight: FontWeight.w600),

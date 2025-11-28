@@ -1,5 +1,3 @@
-// lib/screens/splash_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -21,18 +19,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _redirect() async {
-    // 1. Beri jeda 2 detik agar logo aplikasi terlihat sejenak
+   
     await Future.delayed(const Duration(seconds: 2));
 
-    // 2. Cek session Supabase (apakah ada user yang tersimpan/sedang login?)
     final session = Supabase.instance.client.auth.currentSession;
 
-    // 3. Arahkan user menggunakan Get.offAllNamed 
-    // (offAllNamed menghapus riwayat back button, agar user tidak bisa kembali ke splash screen)
     if (session != null) {
-      Get.offAllNamed(AppRoutes.notes); // Ke Home
+      Get.offAllNamed(AppRoutes.notes); 
     } else {
-      Get.offAllNamed(AppRoutes.login); // Ke Login
+      Get.offAllNamed(AppRoutes.login); 
     }
   }
 
@@ -52,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo Aplikasi Sederhana
+              
               Icon(Icons.note_alt_outlined, size: 100, color: Colors.white),
               SizedBox(height: 24),
               Text(
@@ -71,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
               SizedBox(height: 24),
-              // Indikator Loading berputar
+             
               CircularProgressIndicator(color: Colors.white),
             ],
           ),

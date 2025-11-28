@@ -1,4 +1,3 @@
-// lib/screens/auth/login_screen.dart
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,14 +18,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final SupabaseService _supabaseService = SupabaseService();
   final _formKey = GlobalKey<FormState>();
   
-  // Controller untuk menangkap input teks
+ 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   
   bool _isLoading = false;
 
   Future<void> _signIn() async {
-    // 1. Cek validasi form (apakah email/pass kosong?)
+    
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
@@ -34,21 +33,21 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      // 2. Panggil service login
+     
       await _supabaseService.signIn(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
       
-      // 3. Jika sukses, pindah ke halaman Notes
+    
       Get.offAllNamed(AppRoutes.notes);
       
     } on AuthException catch (e) {
-      // Error khusus dari Supabase (misal: password salah)
+      
       Get.snackbar('Login Gagal', e.message, 
         backgroundColor: Colors.red, colorText: Colors.white);
     } catch (e) {
-      // Error umum lainnya
+     
       Get.snackbar('Error', 'Terjadi kesalahan: $e',
         backgroundColor: Colors.red, colorText: Colors.white);
     } finally {
